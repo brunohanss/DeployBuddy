@@ -13,11 +13,20 @@
   apt:
     update_cache: yes
 
+- name: Find grafana-cli
+  stat:
+    path: /usr/share/grafana/bin/grafana-cli
+  register: grafana_cli
 
+- name: Set grafana_cli_path
+  set_fact:
+    grafana_cli_path: "{{ grafana_cli.stat.exists | ternary('/usr/share/grafana/bin/grafana-cli', '/usr/bin/grafana-cli') }}"
 
 - name: Add data sources and dashboards
-  command: /usr/bin/grafana-cli --etc /etc/grafana add-datasource
-
+  command: "{{ grafana_cli_path }} --etc /etc/grafana add-datasource"
+  register: grafana_cli_output
+  ignore_errors: yes
+  
 - name: Install Grafana
   apt:
     name: grafana
