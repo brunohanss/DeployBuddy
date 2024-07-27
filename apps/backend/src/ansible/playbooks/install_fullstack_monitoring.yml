@@ -4,3 +4,32 @@
     - role: /home/ubuntu/.ansible/pull/DeployBuddy/apps/backend/src/ansible/roles/prometheus
     - role: /home/ubuntu/.ansible/pull/DeployBuddy/apps/backend/src/ansible/roles/grafana
     - role: /home/ubuntu/.ansible/pull/DeployBuddy/apps/backend/src/ansible/roles/elk
+  tasks:
+    - name: Install Grafana
+      apt:
+        name: grafana
+        state: present
+      notify:
+        - Restart Grafana
+
+    - name: Ensure Grafana is running
+      systemd:
+        name: grafana-server
+        state: started
+        enabled: yes
+      register: grafana_status
+
+    - name: Restart Grafana if not running
+      systemd:
+        name: grafana-server
+        state: restarted
+      when: grafana_status.state != "running"
+
+    - name: Ensure port 3000 is open
+      ufw:
+        rule: allow
+        port: '3000'
+        proto: tcp
+
+    - name: Set Grafana admin password
+      shell: "grafana-cli admin reset-admin-password newpassword"
