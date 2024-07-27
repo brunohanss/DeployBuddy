@@ -75,9 +75,13 @@ else
 fi
 `;
       await this.ssh.executeCommand(checkAndInstallAnsibleCommand);
+      // Define the GitHub repository URL and the playbook path
+      const repoUrl = 'https://github.com/brunohanss/DeployBuddy';
+      const playbookPath =
+        'apps/backend/src/ansible/playbooks/install_fullstack_monitoring.yml';
 
       // Define the command to execute Ansible playbook on the remote server
-      const command = `ansible-playbook D:/Dev/ci-cd-buddy/backend/src/ansible/install_fullstack_monitoring.yml --extra-vars "module_name=${moduleName}"`;
+      const command = `ansible-pull -U ${repoUrl} ${playbookPath} --extra-vars "module_name=${moduleName}"`;
 
       // Execute the command on the remote server
       const output = await this.ssh.executeCommand(command);
