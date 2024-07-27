@@ -1,0 +1,22 @@
+---
+- name: Install Elasticsearch
+  apt:
+    name: elasticsearch
+    state: present
+
+- name: Install Logstash
+  apt:
+    name: logstash
+    state: present
+
+- name: Install Kibana
+  apt:
+    name: kibana
+    state: present
+
+- name: Configure ELK Stack
+  template:
+    src: logstash.conf.j2
+    dest: /etc/logstash/conf.d/logstash.conf
+  notify:
+    - Restart Logstash

@@ -1,0 +1,15 @@
+---
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: present
+
+- name: Configure Grafana
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+  notify:
+    - Restart Grafana
+
+- name: Add data sources and dashboards
+  command: /usr/bin/grafana-cli --etc /etc/grafana add-datasource

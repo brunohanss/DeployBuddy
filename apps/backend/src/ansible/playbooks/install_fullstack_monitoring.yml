@@ -1,0 +1,7 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: prometheus
+    - role: grafana
+    - role: elk_stack

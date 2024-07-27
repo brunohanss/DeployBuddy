@@ -1,0 +1,12 @@
+{
+  "name": "ci-cd-buddy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/brunohanss/DeployBuddy.git",
+  "author": "bruno <hanss.bruno@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+   "apps/*"
+ ]
+}
