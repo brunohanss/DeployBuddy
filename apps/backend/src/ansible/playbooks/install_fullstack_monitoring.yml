@@ -1,5 +1,8 @@
 - hosts: localhost
   become: yes
+  vars:
+    ansible_roles_path: /home/ubuntu/.ansible/pull/DeployBuddy/apps/backend/src/ansible/roles
+  
   roles:
     - { role: roles/prometheus }
     - { role: roles/grafana }
