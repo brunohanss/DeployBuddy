@@ -34,7 +34,7 @@ export class InstancesController {
     @Param() params: { userId: string },
     @Req() req: Request,
   ) {
-    const { userJwt } = req as any;
+    const { userJwt } = req.body as any;
     console.group('userJwt', userJwt);
     console.group('userId', params.userId);
     const sshCredentials = await this.supabaseService.getSshCredentials(
