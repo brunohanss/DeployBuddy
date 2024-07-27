@@ -12,6 +12,20 @@
 - name: Update APT cache
   apt:
     update_cache: yes
+    force_apt_get: yes  # Use apt-get instead of apt, useful for older systems
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: present
+  notify:
+    - Restart Grafana
+
+- name: Ensure Grafana is running
+  systemd:
+    name: grafana-server
+    state: started
+    enabled: yes
 
 - name: Find grafana-cli
   stat:
@@ -26,16 +40,3 @@
   command: "{{ grafana_cli_path }} --etc /etc/grafana add-datasource"
   register: grafana_cli_output
   ignore_errors: yes
-  
-- name: Install Grafana
-  apt:
-    name: grafana
-    state: present
-  notify:
-    - Restart Grafana
-
-- name: Ensure Grafana is running
-  systemd:
-    name: grafana-server
-    state: started
-    enabled: yes
